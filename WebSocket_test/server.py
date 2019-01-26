@@ -1,24 +1,13 @@
-import time
-from websocket import create_connection
+from websocket_server import WebsocketServer
 
-ws = create_connection('ws://192.168.1.10:1234/')
+def new_client(client, server):
+    server.send_message_to_all('Hey all, a new client has joined us')
 
-result = ws.recv()
-print('Recieved "%s"' % result)
-time.sleep(1)
+def send_msg_all_client(client, server, message):
+    server.send_message_to_all('Hey all:' + message)
 
-count = 0
-while True:
-    time.sleep(1)
+server = WebsocketServer(1234, host = '192.168.1.10')
+server.set_fn_new_client(new_client)
+server.set_fn_message_recieved(send_msg_all_client)
 
-    data1 = count + 10
-    date2 = count + 20
-    date3 = count + 30
-
-    count += 1
-
-    ws.send(str(data1)+ ',' + str(date2) + ',' + str(date3))
-    result = ws.recv()
-    print('Recieved "%s"' %result)
-
-ws.close
+server.run_forever()

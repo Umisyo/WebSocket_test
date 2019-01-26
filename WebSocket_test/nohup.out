@@ -1,0 +1,4 @@
+  File "server.py", line 1
+    from websocket-server import WebsocketServer
+                  ^
+SyntaxError: invalid syntax
